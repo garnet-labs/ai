@@ -13,8 +13,8 @@ export interface AgentOnToolCallStartEvent {
     toolName: string;
     input: unknown;
   };
-  /** The current step number (0-based) */
-  readonly stepNumber: number;
+  /** The current step number (0-based). May be undefined in some agent implementations. */
+  readonly stepNumber: number | undefined;
 }
 
 /**
@@ -67,8 +67,8 @@ export type AgentOnToolCallFinishEvent =
  * Agent implementations may extend this with additional properties.
  */
 export interface AgentOnStepStartEvent<TTools extends ToolSet = ToolSet> {
-  /** The current step number (0-based) */
-  readonly stepNumber: number;
+  /** The current step number (0-based). May be undefined in some agent implementations. */
+  readonly stepNumber: number | undefined;
   /** The messages being sent for this step */
   readonly messages: ModelMessage[] | ReadonlyArray<ModelMessage>;
   /** Results from all previously finished steps */
