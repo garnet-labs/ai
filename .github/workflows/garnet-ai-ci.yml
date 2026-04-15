@@ -1,0 +1,27 @@
+name: Garnet ai CI
+on:
+  workflow_dispatch:
+jobs:
+  dep-install:
+    name: Dependency Install (Garnet)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Garnet Runtime Visibility
+        uses: garnet-org/action@v2
+        with:
+          api_token: ${{ secrets.GARNET_API_TOKEN }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: |
+          if [ -f pnpm-lock.yaml ]; then
+            npm install -g pnpm
+            pnpm install --no-frozen-lockfile
+          elif [ -f yarn.lock ]; then
+            corepack enable
+            yarn install --no-immutable || yarn install
+          else
+            npm install --ignore-scripts=false
+          fi
